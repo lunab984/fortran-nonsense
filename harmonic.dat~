@@ -1,0 +1,33 @@
+PROGRAM HarmonicMotion
+IMPLICIT NONE
+REAL, ALLOCATABLE, DIMENSION(:) :: x, v          !Declare real variables
+REAL t, k, m, xs, vs, ts, pi
+INTEGER i, j, n         !Declare integer variables
+n = 500
+pi = 4.0*atan(1.0)
+ALLOCATE(x(n), y(n))
+WRITE(*,*) 'Input the spring constant.'
+READ(*,*) k
+WRITE(*,*) 'Input the mass at the end of the spring.'
+READ(*,*) m
+x(1) = 2
+v(1) = 0.5
+xs = pi/50
+vs = pi/50
+ts = pi/50
+t = 0.0
+DO i = 1, n + 1
+	x(i + 1) = v(i)*sqrt(m/k)*sin((sqrt(k/m))*(t + ts)) + x(i)*cos((sqrt(k/m))*t)
+	v(i + 1) = v(i)*cos((sqrt(k/m))*t) - x(i)*(sqrt(k/m))*sin((sqrt(k/m))*t)
+	t = t + ts
+ENDDO
+
+!Write out the values you have calculated to file so you can plot them
+
+OPEN(UNIT = 10, FILE = 'harmonic.dat')
+	WRITE(10, *) '# t, x, v'
+	DO i = 1, n + 1
+		WRITE(10,*) t, x, v
+	ENDDO
+	CLOSE(10)
+END

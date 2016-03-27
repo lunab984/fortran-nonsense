@@ -1,0 +1,38 @@
+PROGRAM Pendulum
+IMPLICIT NONE
+REAL, ALLOCATABLE, DIMENSION(:) :: theta, t, omega, alpha
+REAL l, g, ts, pi, angle
+INTEGER i, n         !Declare integer variables
+ALLOCATE(theta(n), t(n), omega(n), alpha(n))
+!initialize any necessary values - starting points, step sizes, etc..
+!might also allocate memory for arrays
+n = 1000
+ts = 0.01
+pi = 4.0*atan(1.0)
+g = -9.8
+l = 1.0
+WRITE(*,*) "Input the initial angle in degrees"
+READ(*,*) angle
+t(1) = 0.0
+theta(1) = angle*pi/180.0
+omega(1) = 0.0
+alpha(1) = g/l*theta(1)
+theta(0) = theta(1) - omega(1)*ts + 0.5*ts + (ts**2)/2.0*alpha(1)
+OPEN(UNIT = 10, FILE = 'thetapendten.dat')
+OPEN(UNIT = 20, FILE = 'omegapendten.dat')
+OPEN(UNIT = 30, FILE = 'alphapendten.dat')
+	write(10,*) "# t    theta"
+    write(20,*) "# t    omega"
+    write(30,*) "# t    alpha"
+DO i = 1, n
+	theta(i + 1) = 2.0*theta(i) - theta(i - 1) + (ts**2)*alpha(i)
+	omega(i + 1) = omega(i - 1) + 2.0*ts*alpha(i)
+	alpha(i + 1) = g/l*theta(i + 1)
+	WRITE(10,*) t(i), theta(i)
+	WRITE(20,*) t(i), omega(i)
+	WRITE(30,*) t(i), alpha(i)
+ENDDO
+CLOSE(10)
+CLOSE(20)
+CLOSE(30)
+END

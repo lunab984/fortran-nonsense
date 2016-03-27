@@ -1,0 +1,22 @@
+PROGRAM Freefall
+IMPLICIT NONE
+REAL y, v, t, a, tau, vold !Initialize everything 
+OPEN(UNIT=25, FILE='FreefallCodecheckY.dat')
+WRITE(25,*) '# time    height'
+OPEN(UNIT=30, FILE='FreefallCodecheckV.dat')
+WRITE(30,*) '# time    velocity'
+y = 57.0
+v = -3.8
+t = 0.0
+a = -9.8
+vold = -3.8
+tau = 0.0001
+DO WHILE(y .ge. 0)
+t = t + tau
+vold = v
+v = v + a*tau
+y = y + 0.5*(v + vold)*tau
+WRITE(25,*) t, y !y vs. t
+WRITE(30,*) t, v !v vs. t
+ENDDO
+END

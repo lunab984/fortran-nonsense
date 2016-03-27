@@ -1,0 +1,61 @@
+Program SelectiveGeneticDrift
+Implicit None
+REAL func, x, y, a, b, temp, Minimum, FindMinimum
+INTEGER par1, par2, parents, length, Location, i, start
+
+
+END PROGRAM SelectiveGeneticDrift
+
+INTEGER FUNCTION func(x)
+func = (x - 0.2)**6 + (x - 0.5)**4 - x**3 + (x + 0.8)**2
+END FUNCTION func
+
+INTEGER FUNCTION FindMinimum(x, Start, Last)
+		REAL, DIMENSION(:), INTENT(IN)      :: x
+		INTEGER, INTENT(IN)                 :: Start, Last
+		REAL Minimum
+		INTEGER Location
+		INTEGER i
+
+		Minimum = x(Start)
+		Location = Start
+		DO i = Start + 1, Last
+			IF (x(i) .lt. Minimum) THEN
+				Minimum = x(i)
+				Location = 1
+			END IF
+		END DO
+	FindMinimum = Location
+END FUNCTION FindMinimum
+
+
+SUBROUTINE Swap(a, b)
+	IMPLICIT NONE
+	REAL, INTENT(INOUT)                     :: a, b
+	REAL                                    :: Temp
+
+	Temp = a
+	a    = b
+	b    = Temp
+
+END SUBROUTINE Swap
+
+SUBROUTINE sortpop(x, y, length)
+implicit none
+	REAL, DIMENSION(1:), Intent(Inout)  :: x, y
+	INTEGER, INTENT(IN)                 :: length
+	INTEGER                             :: i
+	INTEGER                             :: Location
+	
+	DO i = 1, length - 1
+		Location = FindMinimum(y, i, length)
+		CALL Swap(x(i), x(Location))
+		CALL Swap(y(i), y(Location))
+	END DO
+END SUBROUTINE sortpop
+
+
+
+
+
+

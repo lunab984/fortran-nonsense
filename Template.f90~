@@ -1,0 +1,25 @@
+PROGRAM Template
+IMPLICIT NONE
+REAL             !Declare real variables
+INTEGER          !Declare integer variables
+
+!initialize any necessary values - starting points, step sizes, etc..
+!might also allocate memory for arrays
+
+
+!loop - calculations, where the cool stuff happens
+DO i = 1, 1000
+
+
+
+ENDDO
+
+!Write out the values you have calculated to file so you can plot them
+
+OPEN(UNIT = 10, FILE = 'filename.dat')
+	WRITE(10, *) '# header of data file'
+	DO i = 1, 1000
+		WRITE(10,*)
+	ENDDO
+	CLOSE(10)
+END
